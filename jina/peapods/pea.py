@@ -39,6 +39,7 @@ class PeaMeta(type):
 
     def __call__(cls, *args, **kwargs):
         # switch to the new backend
+        import os
         os.environ['CUDA_VISIBLE_DEVICES'] = '0'
         _cls = {
             'thread': threading.Thread,
