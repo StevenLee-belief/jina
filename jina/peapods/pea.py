@@ -39,10 +39,12 @@ class PeaMeta(type):
 
     def __call__(cls, *args, **kwargs):
         # switch to the new backend
+        os.environ['CUDA_VISIBLE_DEVICES'] = '0'
         _cls = {
             'thread': threading.Thread,
             'process': multiprocessing.Process,
         }.get(getattr(args[0], 'runtime', 'thread'))
+
 
         # rebuild the class according to mro
         for c in cls.mro()[-2::-1]:
@@ -223,6 +225,7 @@ class BasePea(metaclass=PeaMeta):
             try:
                 self.executor = BaseExecutor.load_config(self.args.yaml_path,
                                                          self.args.separated_workspace, self.args.replica_id)
+
                 if self.args.override_exec_log:
                     self.executor.logger = self.logger
                 self.executor.attach(pea=self)
