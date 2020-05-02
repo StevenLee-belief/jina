@@ -42,6 +42,7 @@ class ExecutorType(type):
         # do _preload_package
         getattr(cls, 'pre_init', lambda *x: None)()
         os.environ['CUDA_VISIBLE_DEVICES'] = 0
+
         m = kwargs.pop('metas') if 'metas' in kwargs else {}
         r = kwargs.pop('requests') if 'requests' in kwargs else {}
 
